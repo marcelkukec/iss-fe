@@ -1,0 +1,16 @@
+.container {
+    margin: 0;
+}
+
+.navbar {
+    background-color: whitesmoke;
+    border-bottom: 1px solid lightgray;
+}
+
+.nav .nav-link {
+    padding: 0.5rem 1rem;
+}
+
+.nav .nav-link.active {
+    font-weight: bold;
+}
