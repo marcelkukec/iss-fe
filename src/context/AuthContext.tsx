@@ -1,5 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import api from "../api/api";
+import {useNavigate} from "react-router-dom";
 
 interface User {
     id: number;
@@ -22,7 +23,8 @@ const AuthContext = createContext<AuthContextType | null>(null);
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const [user, setUser] = useState<User | null>(null);
-    const [loading, setLoading] = useState(true); // 👈 loading state
+    const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -55,6 +57,10 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         delete api.defaults.headers.common["Authorization"];
         setIsLoggedIn(false);
         setUser(null);
+
+        setTimeout(() => {
+            navigate("/login");
+        }, 0);
     };
 
     return (

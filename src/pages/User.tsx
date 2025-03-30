@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import api from "../api/api";
 import { useNavigate } from "react-router-dom";
-import '../css/User.css';
+import '../css/Form.css';
 import * as React from "react";
 
 export default function User() {
@@ -29,6 +29,8 @@ export default function User() {
                 password: "",
             });
         }
+
+        document.title = 'User';
     }, [user]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,12 +64,25 @@ export default function User() {
         }
     };
 
-    if (!user) return <div>Loading...</div>;
+    const handleDelete = async () => {
+        if (!window.confirm("Are you sure you want to delete your account?")) {
+            return;
+        }
+
+        try {
+            await api.delete('/users/me');
+            alert('Your account has been deleted.');
+            logout();
+        } catch (err: any) {
+            console.error(err);
+            alert("Failed to delete account.");
+        }
+    }
 
     return (
-        <div className="user-wrapper m-auto">
-            <form className="user-form" onSubmit={handleSubmit}>
-                <h1 className="h3 mb-3 fw-normal text-center">{ editMode ? <>Edit Profile</> : <>Your Profile</> }</h1>
+        <div className="form-wrapper m-auto">
+            <form className="form-width" onSubmit={handleSubmit}>
+                <h3 className="mb-3 fw-heavy text-center">{ editMode ? <>Edit Profile</> : <>Your Profile</> }</h3>
 
                 <div className="form-floating mb-2">
                     <input type="text" name="first_name" className="form-control" value={formData.first_name} onChange={handleChange} disabled={!editMode}
@@ -115,7 +130,11 @@ export default function User() {
                         <button type="button" onClick={() => setEditMode(false) } className="btn btn-outline-primary w-100 py-2">Cancel</button>
                     </>
                 ) : (
-                    <button type="button" onClick={() => setEditMode(true)} className="btn btn-primary w-100 py-2">Update Info</button>
+                    <>
+                        <button type="button" onClick={() => setEditMode(true)} className="btn btn-primary w-100 py-2 mb-2">Update Info</button>
+
+                        <button type="button" onClick={handleDelete} className="btn btn-danger w-100 py-2">Delete account</button>
+                    </>
                 )}
             </form>
         </div>

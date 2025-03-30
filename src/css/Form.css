@@ -1,4 +1,4 @@
-.login-wrapper {
+.form-wrapper {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -6,10 +6,6 @@
     margin: 0;
 }
 
-.form-signin {
+.form-width {
     width: 22rem;
-}
-
-.form-signin  {
-    margin-bottom: -1px;
 }
