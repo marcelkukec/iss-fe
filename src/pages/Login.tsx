@@ -2,14 +2,14 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import '../css/Login.css';
 import api from "../api/api.ts";
-import { useAuth } from "../context/AuthContext.tsx"; // ← Import context
+import { useAuth } from "../context/AuthContext.tsx";
 
 export default function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
-    const { login } = useAuth(); // ← Use login from context
-    const navigate = useNavigate(); // ← Better than window.location
+    const { login } = useAuth();
+    const navigate = useNavigate();
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();

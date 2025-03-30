@@ -28,15 +28,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         const token = localStorage.getItem("token");
         if (token) {
             api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-            api.get("/users/me")
-                .then((res) => {
+            api.get("/users/me").then((res) => {
                     setUser(res.data);
                     setIsLoggedIn(true);
-                })
-                .catch(() => {
+                }).catch(() => {
                     logout();
-                })
-                .finally(() => setLoading(false));
+                }).finally(() => setLoading(false));
         } else {
             setLoading(false);
         }
@@ -50,11 +47,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         setIsLoggedIn(true);
 
         api.get("/users/me")
-            .then((res) => setUser(res.data))
-            .catch(() => logout());
-
-        console.log("Token in login:", token);
-        console.log("api.defaults.headers", api.defaults.headers);
+            .then((res) => setUser(res.data)).catch(() => logout());
     };
 
     const logout = () => {

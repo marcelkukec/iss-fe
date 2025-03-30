@@ -1,65 +1,123 @@
-import {useAuth} from "../context/AuthContext.tsx";
-import {Navigate} from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useAuth } from "../context/AuthContext";
+import api from "../api/api";
+import { useNavigate } from "react-router-dom";
 import '../css/User.css';
+import * as React from "react";
 
 export default function User() {
-    const { user, isLoggedIn } = useAuth();
+    const { user, logout } = useAuth();
+    const [editMode, setEditMode] = useState(false);
+    const [formData, setFormData] = useState({
+        first_name: "",
+        last_name: "",
+        username: "",
+        email: "",
+        password: "",
+        currentPassword: ""
+    });
+    const [currentPassword, setCurrentPassword] = useState('');
+    const navigate = useNavigate();
 
-    if(!isLoggedIn || !user) {
-        <Navigate to= "/login" />
-    }
+    useEffect(() => {
+        if (user) {
+            setFormData({
+                first_name: user.first_name,
+                last_name: user.last_name,
+                username: user.username,
+                email: user.email,
+                password: "",
+            });
+        }
+    }, [user]);
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
+        e.preventDefault();
+
+        const payload: any = {
+            first_name: formData.first_name,
+            last_name: formData.last_name,
+            username: formData.username,
+            email: formData.email,
+            current_password: currentPassword,
+        };
+
+        if (formData.password.trim() !== "") {
+            payload.password = formData.password;
+        }
+
+        try {
+            await api.patch(`/users/me`, payload);
+            alert("User updated successfully.");
+            setEditMode(false);
+            setFormData(prev => ({ ...prev, password: "" }));
+        } catch (err: any) {
+            console.error(err);
+            alert("Failed to update user.");
+        }
+    };
+
+    if (!user) return <div>Loading...</div>;
 
     return (
-        <>
-            <main className="user-wrapper m-auto">
-                <form className="user-form">
-                    <h2 className="mb-4 text-center">Your Profile</h2>
+        <div className="user-wrapper m-auto">
+            <form className="user-form" onSubmit={handleSubmit}>
+                <h1 className="h3 mb-3 fw-normal text-center">{ editMode ? <>Edit Profile</> : <>Your Profile</> }</h1>
 
-                    <div className="form-floating mb-3">
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="firstName"
-                            value={user?.first_name}
-                            disabled
-                        />
-                        <label htmlFor="firstName">First Name</label>
-                    </div>
+                <div className="form-floating mb-2">
+                    <input type="text" name="first_name" className="form-control" value={formData.first_name} onChange={handleChange} disabled={!editMode}
+                    />
+                    <label>First Name</label>
+                </div>
 
-                    <div className="form-floating mb-3">
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="lastName"
-                            value={user?.last_name}
-                            disabled
-                        />
-                        <label htmlFor="lastName">Last Name</label>
-                    </div>
+                <div className="form-floating mb-2">
+                    <input type="text" name="last_name" className="form-control" value={formData.last_name} onChange={handleChange} disabled={!editMode}
+                    />
+                    <label>Last Name</label>
+                </div>
 
-                    <div className="form-floating mb-3">
-                        <input
-                            type="text"
-                            className="form-control"
-                            id="username"
-                            value={user?.username}
-                            disabled
-                        />
-                        <label htmlFor="username">Username</label>
-                    </div>
+                <div className="form-floating mb-2">
+                    <input type="text" name="username" className="form-control" value={formData.username} onChange={handleChange} disabled={!editMode}
+                    />
+                    <label>Username</label>
+                </div>
 
-                    <div className="form-floating mb-3">
-                        <input
-                            type="email"
-                            className="form-control"
-                            id="email"
-                            value={user?.email}
-                            disabled
-                        />
-                        <label htmlFor="email">Email</label>
-                    </div>
-                </form>
-            </main>
-        </>
-    )
+                <div className="form-floating mb-2">
+                    <input type="email" name="email" className="form-control" value={formData.email} onChange={handleChange} disabled={!editMode}
+                    />
+                    <label>Email</label>
+                </div>
+
+                {editMode && (
+                    <>
+                        <div className="form-floating mb-2">
+                            <input type="password" name="password" className="form-control" value={formData.password} onChange={handleChange}
+                            />
+                            <label>New Password</label>
+                        </div>
+
+                        <div className="form-floating mb-2">
+                            <input type="password" className="form-control" id="currentPassword" value={currentPassword} onChange={(e) => setCurrentPassword(e.target.value)} required />
+                            <label htmlFor="currentPassword">Current Password</label>
+                        </div>
+                    </>
+                )}
+
+                {editMode ? (
+                    <>
+                        <button type="submit" className="btn btn-primary w-100 py-2 mb-2">Save Changes</button>
+
+                        <button type="button" onClick={() => setEditMode(false) } className="btn btn-outline-primary w-100 py-2">Cancel</button>
+                    </>
+                ) : (
+                    <button type="button" onClick={() => setEditMode(true)} className="btn btn-primary w-100 py-2">Update Info</button>
+                )}
+            </form>
+        </div>
+    );
 }
