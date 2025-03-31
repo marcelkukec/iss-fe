@@ -8,6 +8,7 @@ import Post from "./components/Post.tsx";
 import Group from "./components/Group.tsx";
 import Explore from "./pages/Explore.tsx";
 import CreatePost from "./components/CreatePost.tsx";
+import UserPosts from "./pages/UserPosts.tsx";
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/user" element={<User />} />
+        <Route path="/user/:id/posts" element={<UserPosts />} />
         <Route path="/groups/:id" element={<Group />} />
     </Routes>
   )

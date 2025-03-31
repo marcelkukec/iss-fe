@@ -25,12 +25,20 @@ export default function Post() {
     return (
         <>
             <div className="container mt-4">
-                <div>
-                    <div className="text-muted small">Posted by {post.user?.username || "deleted_user"}/
-                        <Link to={`/groups/${post.group.id}`} className="text-muted">{post.group.name}&nbsp;</Link>
-                        • {new Date(post.created_at).toLocaleString()}</div>
-                    <h2 className="mt-2">{post.title}</h2>
-                    <p>{post.body}</p>
+                <div className="text-muted small">
+                    Posted by{" "}
+                    {post.user?.username ? (
+                        <Link to={`/user/${post.user.id}/posts`} className="text-muted">
+                            {post.user.username}
+                        </Link>
+                    ) : (
+                        "deleted_user"
+                    )}
+                    /
+                    <Link to={`/groups/${post.group.id}`} className="text-muted">
+                        {post.group.name}&nbsp;
+                    </Link>
+                    • {new Date(post.created_at).toLocaleString()}
                 </div>
 
                 <h4>Comments</h4>
