@@ -57,15 +57,20 @@ export default function Group() {
 
     return (
         <div className="container mt-4">
-            <div>
+            <div className="d-inline-flex flex-column mb-4">
                 {isLoggedIn && (
-                    <button className={`btn ${isMember ? 'btn-outline-danger' : 'btn-outline-success'} mb-4`} onClick={handleToggleMembership} >
+                    <button
+                        className={`btn ${isMember ? 'btn-outline-danger' : 'btn-outline-success'} w-auto mb-2`}
+                        onClick={handleToggleMembership}
+                    >
                         {isMember ? 'Leave Group' : 'Join Group'}
                     </button>
                 )}
 
                 {isMember && (
-                    <Link to={`/create?group_id=${id}`} className="btn btn-primary">Create Post</Link>
+                    <Link to={`/create?group_id=${id}`} className="btn btn-primary w-auto">
+                        Create Post
+                    </Link>
                 )}
             </div>
 
