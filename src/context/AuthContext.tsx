@@ -41,15 +41,19 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }
     }, []);
 
-    const login = (token: string) => {
+    const login = async (token: string) => {
         localStorage.setItem("token", token);
 
         api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
         setIsLoggedIn(true);
 
-        api.get("/users/me")
-            .then((res) => setUser(res.data)).catch(() => logout());
+        try {
+            const res = await api.get('/users/me');
+            setUser(res.data);
+        } catch (error) {
+            logout();
+        }
     };
 
     const logout = () => {
