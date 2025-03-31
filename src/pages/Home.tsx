@@ -20,10 +20,10 @@ export default function Home() {
     const [posts, setPosts] = useState<PostData[]>([]);
 
     useEffect(() => {
-        api.get('/posts').then((res) => setPosts(res.data));
-
+        api.get('/posts/my-feed').then((res) => setPosts(res.data));
         document.title = 'Home';
-    }, [])
+    }, []);
+
     return (
         <>
             <div className="container mt-4">
