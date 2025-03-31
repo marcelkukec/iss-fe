@@ -27,7 +27,7 @@ export default function Home() {
         <>
             <div className="container mt-4">
                 { posts.map(post => (
-                    <PostCard id={post.id} key={post.id} title={post.title} body={post.body} user={post.user ? post.user.username : 'deleted_user'} group={post.group?.name ?? 'unknown group'} created_at={post.created_at} />
+                    <PostCard id={post.id} key={post.id} title={post.title} body={post.body} user={post.user ? post.user.username : 'deleted_user'} group={post.group.name} created_at={post.created_at} />
                 ))}
             </div>
         </>

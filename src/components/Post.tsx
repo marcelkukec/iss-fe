@@ -1,4 +1,4 @@
-import {useParams} from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import api from "../api/api.ts";
 
@@ -26,7 +26,9 @@ export default function Post() {
         <>
             <div className="container mt-4">
                 <div>
-                    <div className="text-muted small">Posted by {post.user?.username || "deleted_user"}/{post.group?.name || "unknown"} • {new Date(post.created_at).toLocaleString()}</div>
+                    <div className="text-muted small">Posted by {post.user?.username || "deleted_user"}/
+                        <Link to={`/groups/${post.group.id}`} className="text-muted">{post.group.name}</Link>
+                        • {new Date(post.created_at).toLocaleString()}</div>
                     <h2 className="mt-2">{post.title}</h2>
                     <p>{post.body}</p>
                 </div>
