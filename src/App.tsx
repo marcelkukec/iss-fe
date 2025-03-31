@@ -6,11 +6,13 @@ import Register from "./pages/Register.tsx";
 import User from "./pages/User.tsx";
 import Post from "./components/Post.tsx";
 import Group from "./components/Group.tsx";
+import Explore from "./pages/Explore.tsx";
 
 function App() {
   return (
     <Routes>
         <Route path="/" element={<Home />} />
+        <Route path="/explore" element={<Explore />} />
         <Route path="/posts/:id" element={<Post />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
