@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import {Link, useParams} from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../api/api";
 import PostCard from "../components/PostCard";
@@ -57,15 +57,17 @@ export default function Group() {
 
     return (
         <div className="container mt-4">
+            <div>
+                {isLoggedIn && (
+                    <button className={`btn ${isMember ? 'btn-outline-danger' : 'btn-outline-success'} mb-4`} onClick={handleToggleMembership} >
+                        {isMember ? 'Leave Group' : 'Join Group'}
+                    </button>
+                )}
 
-            {isLoggedIn && (
-                <button
-                    className={`btn ${isMember ? 'btn-outline-danger' : 'btn-outline-success'} mb-4`}
-                    onClick={handleToggleMembership}
-                >
-                    {isMember ? 'Leave Group' : 'Join Group'}
-                </button>
-            )}
+                {isMember && (
+                    <Link to={`/create?group_id=${id}`} className="btn btn-primary">Create Post</Link>
+                )}
+            </div>
 
             <h2 className="mb-2">{groupName}</h2>
             <h6 className="mb-4 text-muted">{groupDesc}</h6>

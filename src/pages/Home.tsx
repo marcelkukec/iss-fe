@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import PostCard from "../components/PostCard.tsx";
 import api from "../api/api.ts";
+import {Link} from "react-router-dom";
 
 interface PostData {
     id: number;
@@ -25,6 +26,10 @@ export default function Home() {
     }, [])
     return (
         <>
+            <div className="container mt-4">
+                <Link to='/create' className="btn btn-primary">Create post</Link>
+            </div>
+
             <div className="container mt-4">
                 { posts.map(post => (
                     <PostCard id={post.id} key={post.id} title={post.title} body={post.body} user={post.user ? post.user.username : 'deleted_user'} group={post.group.name} created_at={post.created_at} />
