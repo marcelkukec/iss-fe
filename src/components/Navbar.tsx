@@ -1,47 +1,50 @@
 import '../css/Navbar.css'
-import { Link } from 'react-router-dom';
+import {NavLink} from 'react-router-dom';
 import {useAuth} from "../context/AuthContext.tsx";
 
 const Navbar = () => {
     const { isLoggedIn, user, logout } = useAuth();
+
+    const getNavLinkClass = ({ isActive }: { isActive: boolean }) =>
+        `nav-link link-body-emphasis px-2${isActive ? ' active fw-bold' : ''}`;
 
     return (
         <nav className="navbar py-2">
             <div className="container-fluid d-flex flex-wrap justify-content-between">
                 <ul className="nav me-auto">
                     <li className="nav-item">
-                        <Link to="/" className="nav-link link-body-emphasis px-2 active">Home</Link>
+                        <NavLink to="/" className={getNavLinkClass}>Home</NavLink>
                     </li>
                     <li className="nav-item">
-                        <Link to="/explore" className="nav-link link-body-emphasis px-2">Explore</Link>
+                        <NavLink to="/explore" className={getNavLinkClass}>Explore</NavLink>
                     </li>
                     <li className="nav-item">
-                        <Link to="/pricing" className="nav-link link-body-emphasis px-2">Pricing</Link>
+                        <NavLink to="/pricing" className={getNavLinkClass}>Pricing</NavLink>
                     </li>
                     <li className="nav-item">
-                        <Link to="/faqs" className="nav-link link-body-emphasis px-2">FAQs</Link>
+                        <NavLink to="/faqs" className={getNavLinkClass}>FAQs</NavLink>
                     </li>
                     <li className="nav-item">
-                        <Link to="/about" className="nav-link link-body-emphasis px-2">About</Link>
+                        <NavLink to="/about" className={getNavLinkClass}>About</NavLink>
                     </li>
                 </ul>
 
                 {isLoggedIn ? (
                     <ul className="nav">
                         <li className="nav-item">
-                            <Link to="/user" className="nav-link link-body-emphasis px-2">{ user?.username }</Link>
+                            <NavLink to="/user" className={getNavLinkClass}>{user?.username}</NavLink>
                         </li>
                         <li className="nav-item">
-                            <button onClick={logout} className="nav-link px-2 link-body-emphasis">Log out</button>
+                            <button onClick={logout} className="nav-link px-2 link-body-emphasis btn btn-link">Log out</button>
                         </li>
                     </ul>
-                ): (
+                ) : (
                     <ul className="nav">
                         <li className="nav-item">
-                            <Link to="/login" className="nav-link link-body-emphasis px-2">Log in</Link>
+                            <NavLink to="/login" className={getNavLinkClass}>Log in</NavLink>
                         </li>
                         <li className="nav-item">
-                            <Link to="/register" className="nav-link link-body-emphasis px-2">Sign up</Link>
+                            <NavLink to="/register" className={getNavLinkClass}>Sign up</NavLink>
                         </li>
                     </ul>
                 )}
