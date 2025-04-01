@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import PostCard from "../components/PostCard.tsx";
 import api from "../api/api.ts";
+import {useAuth} from "../context/AuthContext.tsx";
 
 interface PostData {
     id: number;
@@ -22,6 +23,7 @@ interface GroupData {
 }
 
 export default function Explore() {
+    const { isLoggedIn } = useAuth();
     const [posts, setPosts] = useState<PostData[]>([]);
     const [groups, setGroups] = useState<GroupData[]>([]);
 
@@ -46,8 +48,12 @@ export default function Explore() {
 
                     <div className="col-md-4">
                         <div className="d-flex justify-content-between align-items-center mb-3">
-                            <h5 className="mb-0">Groups</h5>
-                            <Link to="/groups/create" className="btn btn-sm btn-success">+ Create Group</Link>
+                            {isLoggedIn ?? (
+                                <>
+                                    <h5 className="mb-0">Groups</h5>
+                                    <Link to="/groups/create" className="btn btn-sm btn-success">+ Create Group</Link>
+                                </>
+                            )}
                         </div>
                         <ul className="list-group">
                             {groups.map((group) => (

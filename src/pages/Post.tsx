@@ -96,8 +96,14 @@ export default function Post() {
 
                 <h4 className="mt-5">Comments</h4>
                 <div className="mb-4">
-                    {!showCommentForm ? (
-                        <button className="btn btn-outline-primary mt-2" onClick={toggleCommentForm}>Comment</button>
+                    {!showCommentForm  ? (
+                        <button className="btn btn-outline-primary mt-2" onClick={() => {
+                            if (!isLoggedIn) {
+                                window.location.href = "/login";
+                            } else {
+                                toggleCommentForm();
+                            }
+                        }}>Comment</button>
                     ) : (
                         <>
                             <textarea className="form-control mb-2" value={commentContent} onChange={(e) => setCommentContent(e.target.value)} placeholder="Write your comment... "/>

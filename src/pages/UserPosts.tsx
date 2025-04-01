@@ -1,5 +1,5 @@
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState} from "react";
 import api from "../api/api";
 import PostCard from "../components/PostCard";
 
@@ -19,16 +19,22 @@ export default function UserPosts() {
         });
     }, [id]);
 
+    useEffect(() => {
+        document.title = username;
+    }, [username]);
+
     return (
-        <div className="container mt-4">
-            <h2 className="mb-4">Posts by {username}</h2>
-            {posts.length > 0 ? (
-                posts.map((post: any) => (
-                    <PostCard key={post.id} id={post.id} title={post.title} body={post.body} created_at={post.created_at} user={post.user?.username || "deleted_user"} group={post.group?.name || "unknown"}/>
-                ))
-            ) : (
-                <p className="text-muted">No posts from this user yet.</p>
-            )}
+        <div className="d-flex flex-column align-items-center">
+            <div className="container mt-4">
+                <h2 className="mb-4">Posts by {username}</h2>
+                {posts.length > 0 ? (
+                    posts.map((post: any) => (
+                        <PostCard key={post.id} id={post.id} title={post.title} body={post.body} created_at={post.created_at} user={post.user?.username || "deleted_user"} group={post.group?.name || "unknown"}/>
+                    ))
+                ) : (
+                    <p className="text-muted">No posts from this user yet.</p>
+                )}
+            </div>
         </div>
     );
 }

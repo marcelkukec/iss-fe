@@ -1,6 +1,6 @@
-import { useState } from "react";
+import {useEffect, useState} from "react";
 import { useNavigate } from "react-router-dom";
-import api from "../api/api";
+import api from "../api/api.ts";
 
 export default function CreateGroup() {
     const [name, setName] = useState("");
@@ -20,6 +20,10 @@ export default function CreateGroup() {
             alert("Failed to create group.");
         }
     };
+
+    useEffect(() => {
+        document.title = "Create Group";
+    })
 
     return (
         <div className="d-flex flex-column align-items-center">

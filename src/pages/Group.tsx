@@ -1,7 +1,7 @@
 import {Link, useParams} from "react-router-dom";
 import { useEffect, useState } from "react";
-import api from "../api/api";
-import PostCard from "../components/PostCard";
+import api from "../api/api.ts";
+import PostCard from "../components/PostCard.tsx";
 import {useAuth} from "../context/AuthContext.tsx";
 
 interface PostData {
