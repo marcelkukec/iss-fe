@@ -85,34 +85,29 @@ export default function User() {
                 <h3 className="mb-3 fw-heavy text-center">{ editMode ? <>Edit Profile</> : <>Your Profile</> }</h3>
 
                 <div className="form-floating mb-2">
-                    <input type="text" name="first_name" className="form-control" value={formData.first_name} onChange={handleChange} disabled={!editMode}
-                    />
+                    <input type="text" name="first_name" className="form-control" value={formData.first_name} onChange={handleChange} disabled={!editMode}/>
                     <label>First Name</label>
                 </div>
 
                 <div className="form-floating mb-2">
-                    <input type="text" name="last_name" className="form-control" value={formData.last_name} onChange={handleChange} disabled={!editMode}
-                    />
+                    <input type="text" name="last_name" className="form-control" value={formData.last_name} onChange={handleChange} disabled={!editMode}/>
                     <label>Last Name</label>
                 </div>
 
                 <div className="form-floating mb-2">
-                    <input type="text" name="username" className="form-control" value={formData.username} onChange={handleChange} disabled={!editMode}
-                    />
+                    <input type="text" name="username" className="form-control" value={formData.username} onChange={handleChange} disabled={!editMode}/>
                     <label>Username</label>
                 </div>
 
                 <div className="form-floating mb-2">
-                    <input type="email" name="email" className="form-control" value={formData.email} onChange={handleChange} disabled={!editMode}
-                    />
+                    <input type="email" name="email" className="form-control" value={formData.email} onChange={handleChange} disabled={!editMode}/>
                     <label>Email</label>
                 </div>
 
                 {editMode && (
                     <>
                         <div className="form-floating mb-2">
-                            <input type="password" name="password" className="form-control" value={formData.password} onChange={handleChange}
-                            />
+                            <input type="password" name="password" className="form-control" value={formData.password} onChange={handleChange}/>
                             <label>New Password</label>
                         </div>
 

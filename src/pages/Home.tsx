@@ -48,31 +48,17 @@ export default function Home() {
         <div className="d-flex justify-content-center">
             <div className="container mt-4" style={{ maxWidth: "1200px" }}>
                 <div className="row">
-                    {/* Left column: posts */}
                     <div className="col-md-8">
-                        <Link to="/create" className="btn btn-primary mb-4">
-                            Create Post
-                        </Link>
+                        <Link to="/create" className="btn btn-primary mb-4">Create Post</Link>
                         {posts.map(post => (
-                            <PostCard
-                                key={post.id}
-                                id={post.id}
-                                title={post.title}
-                                body={post.body}
-                                user={post.user?.username || 'deleted_user'}
-                                group={post.group.name}
-                                created_at={post.created_at}
-                            />
+                            <PostCard key={post.id} id={post.id} title={post.title} body={post.body} user={post.user?.username || 'deleted_user'} group={post.group.name} created_at={post.created_at}/>
                         ))}
                     </div>
 
-                    {/* Right column: groups */}
                     <div className="col-md-4">
                         <div className="d-flex justify-content-between align-items-center mb-3">
                             <h5 className="mb-0">Groups</h5>
-                            <Link to="/groups/create" className="btn btn-sm btn-success">
-                                + Create Group
-                            </Link>
+                            <Link to="/groups/create" className="btn btn-sm btn-success">+ Create Group</Link>
                         </div>
                         <ul className="list-group">
                             {groups.map(group => (

@@ -74,35 +74,20 @@ export default function Post() {
                 <div className="text-muted small">
                     Posted by{" "}
                     {post.user?.username ? (
-                        <Link to={`/user/${post.user.id}/posts`} className="text-muted">
-                            {post.user.username}
-                        </Link>
+                        <Link to={`/user/${post.user.id}/posts`} className="text-muted">{post.user.username}</Link>
                     ) : (
                         "deleted_user"
                     )}
                     /
-                    <Link to={`/groups/${post.group.id}`} className="text-muted">
-                        {post.group.name}&nbsp;
-                    </Link>
-                    • {new Date(post.created_at).toLocaleString()}
+                    <Link to={`/groups/${post.group.id}`} className="text-muted">{post.group.name}&nbsp;</Link> • {new Date(post.created_at).toLocaleString()}
                 </div>
 
                 <h2 className="mt-2 d-flex justify-content-between align-items-center">
                     <span>{post.title}</span>
                     {isLoggedIn && user?.id === post.user?.id && (
                         <div className="d-flex gap-2">
-                            <button
-                                className="btn btn-sm btn-outline-secondary"
-                                onClick={() => navigate(`/edit/${post.id}`)}
-                            >
-                                Update
-                            </button>
-                            <button
-                                className="btn btn-sm btn-outline-danger"
-                                onClick={handleDeletePost}
-                            >
-                                Delete
-                            </button>
+                            <button className="btn btn-sm btn-outline-secondary" onClick={() => navigate(`/create?post_id=${post.id}`)}>Edit</button>
+                            <button className="btn btn-sm btn-outline-danger" onClick={handleDeletePost}>Delete</button>
                         </div>
                     )}
                 </h2>
@@ -112,24 +97,12 @@ export default function Post() {
                 <h4 className="mt-5">Comments</h4>
                 <div className="mb-4">
                     {!showCommentForm ? (
-                        <button className="btn btn-outline-primary mt-2" onClick={toggleCommentForm}>
-                            Comment
-                        </button>
+                        <button className="btn btn-outline-primary mt-2" onClick={toggleCommentForm}>Comment</button>
                     ) : (
                         <>
-                            <textarea
-                                className="form-control mb-2"
-                                rows={3}
-                                value={commentContent}
-                                onChange={(e) => setCommentContent(e.target.value)}
-                                placeholder="Write your comment..."
-                            />
-                            <button className="btn btn-primary me-2" onClick={handleCommentSubmit}>
-                                Post
-                            </button>
-                            <button className="btn btn-outline-secondary" onClick={toggleCommentForm}>
-                                Cancel
-                            </button>
+                            <textarea className="form-control mb-2" value={commentContent} onChange={(e) => setCommentContent(e.target.value)} placeholder="Write your comment... "/>
+                            <button className="btn btn-primary me-2" onClick={handleCommentSubmit}>Post</button>
+                            <button className="btn btn-outline-secondary" onClick={toggleCommentForm}>Cancel</button>
                         </>
                     )}
                 </div>
@@ -184,24 +157,15 @@ export default function Post() {
                     </span>
                                             {isOwner && !isEditing && (
                                                 <div className="d-flex gap-2">
-                                                    <button className="btn btn-sm btn-outline-secondary" onClick={startEditing}>
-                                                        Edit
-                                                    </button>
-                                                    <button className="btn btn-sm btn-outline-danger" onClick={handleDelete}>
-                                                        Delete
-                                                    </button>
+                                                    <button className="btn btn-sm btn-outline-secondary" onClick={startEditing}>Edit</button>
+                                                    <button className="btn btn-sm btn-outline-danger" onClick={handleDelete}>Delete</button>
                                                 </div>
                                             )}
                                         </div>
 
                                         {isEditing ? (
                                             <>
-                        <textarea
-                            className="form-control mt-2 mb-2"
-                            rows={2}
-                            value={editContent}
-                            onChange={(e) => setEditContent(e.target.value)}
-                        />
+                        <textarea className="form-control mt-2 mb-2" value={editContent} onChange={(e) => setEditContent(e.target.value)}/>
                                                 <div className="d-flex gap-2">
                                                     <button className="btn btn-sm btn-primary" onClick={handleUpdate}>Save</button>
                                                     <button className="btn btn-sm btn-outline-secondary" onClick={cancelEditing}>Cancel</button>

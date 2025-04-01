@@ -24,8 +24,7 @@ export default function UserPosts() {
             <h2 className="mb-4">Posts by {username}</h2>
             {posts.length > 0 ? (
                 posts.map((post: any) => (
-                    <PostCard key={post.id} id={post.id} title={post.title} body={post.body} created_at={post.created_at} user={post.user?.username || "deleted_user"} group={post.group?.name || "unknown"}
-                    />
+                    <PostCard key={post.id} id={post.id} title={post.title} body={post.body} created_at={post.created_at} user={post.user?.username || "deleted_user"} group={post.group?.name || "unknown"}/>
                 ))
             ) : (
                 <p className="text-muted">No posts from this user yet.</p>

@@ -42,13 +42,11 @@ export default function Login() {
                 {error && <div className="alert alert-danger">{error}</div>}
 
                 <div className="form-floating">
-                    <input type="email" className="form-control mb-2" id="floatingInput" value={email} onChange={(e) => setEmail(e.target.value)}
-                    />
+                    <input type="email" className="form-control mb-2" id="floatingInput" value={email} onChange={(e) => setEmail(e.target.value)}/>
                     <label htmlFor="floatingInput">Email</label>
                 </div>
                 <div className="form-floating">
-                    <input type="password" className="form-control mb-2" id="floatingPassword" value={password} onChange={(e) => setPassword(e.target.value)}
-                    />
+                    <input type="password" className="form-control mb-2" id="floatingPassword" value={password} onChange={(e) => setPassword(e.target.value)}/>
                     <label htmlFor="floatingPassword">Password</label>
                 </div>
                 <button className="btn btn-primary w-100 py-2" type="submit">Log in</button>

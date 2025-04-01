@@ -22,7 +22,7 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/user" element={<User />} />
         <Route path="/user/:id/posts" element={<UserPosts />} />
-        <Route path="groups/create" element={<CreateGroup />} />
+        <Route path="/groups/create" element={<CreateGroup />} />
         <Route path="/groups/:id" element={<Group />} />
     </Routes>
   )
