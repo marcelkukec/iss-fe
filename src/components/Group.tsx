@@ -56,33 +56,28 @@ export default function Group() {
     }, [groupName]);
 
     return (
-        <div className="container mt-4">
-            <div className="d-inline-flex flex-column mb-4">
-                {isLoggedIn && (
-                    <button
-                        className={`btn ${isMember ? 'btn-outline-danger' : 'btn-outline-success'} w-auto mb-2`}
-                        onClick={handleToggleMembership}
-                    >
-                        {isMember ? 'Leave Group' : 'Join Group'}
-                    </button>
-                )}
+        <div className="d-flex justify-content-center">
+            <div className="container mt-4">
+                <div className="d-flex gap-2 align-items-stretch mb-4">
+                    {isLoggedIn && (
+                        <button className={`btn ${isMember ? 'btn-outline-danger' : 'btn-outline-success'} w-auto`} onClick={handleToggleMembership}>{isMember ? 'Leave Group' : 'Join Group'}</button>
+                    )}
 
-                {isMember && (
-                    <Link to={`/create?group_id=${id}`} className="btn btn-primary w-auto">
-                        Create Post
-                    </Link>
+                    {isMember && (
+                        <Link to={`/create?group_id=${id}`} className="btn btn-primary w-auto d-flex align-items-center justify-content-center">Create Post</Link>
+                    )}
+                </div>
+
+                <h2 className="mb-2">{groupName}</h2>
+                <h6 className="mb-4 text-muted">{groupDesc}</h6>
+                {posts.length > 0 ? (
+                    posts.map(post => (
+                        <PostCard id={post.id} key={post.id} title={post.title} body={post.body} created_at={post.created_at} user={post.user?.username || "deleted_user"} group={groupName} />
+                    ))
+                ) : (
+                    <p className="text-muted">No posts in this group yet.</p>
                 )}
             </div>
-
-            <h2 className="mb-2">{groupName}</h2>
-            <h6 className="mb-4 text-muted">{groupDesc}</h6>
-            {posts.length > 0 ? (
-                posts.map(post => (
-                    <PostCard id={post.id} key={post.id} title={post.title} body={post.body} created_at={post.created_at} user={post.user?.username || "deleted_user"} group={groupName} />
-                ))
-            ) : (
-                <p className="text-muted">No posts in this group yet.</p>
-            )}
         </div>
     );
 }
