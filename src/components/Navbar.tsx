@@ -18,15 +18,6 @@ const Navbar = () => {
                     <li className="nav-item">
                         <NavLink to="/explore" className={getNavLinkClass}>Explore</NavLink>
                     </li>
-                    <li className="nav-item">
-                        <NavLink to="/pricing" className={getNavLinkClass}>Pricing</NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink to="/faqs" className={getNavLinkClass}>FAQs</NavLink>
-                    </li>
-                    <li className="nav-item">
-                        <NavLink to="/about" className={getNavLinkClass}>About</NavLink>
-                    </li>
                 </ul>
 
                 {isLoggedIn ? (
