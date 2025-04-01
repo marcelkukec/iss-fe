@@ -9,6 +9,7 @@ import Group from "./components/Group.tsx";
 import Explore from "./pages/Explore.tsx";
 import CreatePost from "./components/CreatePost.tsx";
 import UserPosts from "./pages/UserPosts.tsx";
+import CreateGroup from "./components/CreateGroup.tsx";
 
 function App() {
   return (
@@ -16,11 +17,12 @@ function App() {
         <Route path="/" element={<Home />} />
         <Route path="/explore" element={<Explore />} />
         <Route path="/posts/:id" element={<Post />} />
-        <Route path='/create' element={<CreatePost />} />
+        <Route path="/create" element={<CreatePost />} />
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />} />
         <Route path="/user" element={<User />} />
         <Route path="/user/:id/posts" element={<UserPosts />} />
+        <Route path="groups/create" element={<CreateGroup />} />
         <Route path="/groups/:id" element={<Group />} />
     </Routes>
   )
