@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import api from "../api/api";
-import { useNavigate } from "react-router-dom";
 import '../css/Form.css';
 import * as React from "react";
 
@@ -17,7 +16,6 @@ export default function User() {
         currentPassword: ""
     });
     const [currentPassword, setCurrentPassword] = useState('');
-    const navigate = useNavigate();
 
     useEffect(() => {
         if (user) {
@@ -27,6 +25,7 @@ export default function User() {
                 username: user.username,
                 email: user.email,
                 password: "",
+                currentPassword: "",
             });
         }
 
