@@ -4,12 +4,12 @@ import Home from "./pages/Home.tsx";
 import Login from "./pages/Login.tsx";
 import Register from "./pages/Register.tsx";
 import User from "./pages/User.tsx";
-import Post from "./components/Post.tsx";
-import Group from "./components/Group.tsx";
+import Post from "./pages/Post.tsx";
+import Group from "./pages/Group.tsx";
 import Explore from "./pages/Explore.tsx";
-import CreatePost from "./components/CreatePost.tsx";
+import CreatePost from "./pages/CreatePost.tsx";
 import UserPosts from "./pages/UserPosts.tsx";
-import CreateGroup from "./components/CreateGroup.tsx";
+import CreateGroup from "./pages/CreateGroup.tsx";
 
 function App() {
   return (
