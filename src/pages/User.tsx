@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import api from "../api/api";
 import '../css/Form.css';
+import '../css/User.css'
 import * as React from "react";
 import defaultAvatar from '../assets/student.png';
 
