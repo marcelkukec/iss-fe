@@ -3,6 +3,7 @@ import { useAuth } from "../context/AuthContext";
 import api from "../api/api";
 import '../css/Form.css';
 import * as React from "react";
+import defaultAvatar from '../assets/student.png';
 
 export default function User() {
     const { user, logout } = useAuth();
@@ -13,7 +14,7 @@ export default function User() {
         username: "",
         email: "",
         password: "",
-        currentPassword: ""
+        currentPassword: "",
     });
     const [currentPassword, setCurrentPassword] = useState('');
 
@@ -76,12 +77,20 @@ export default function User() {
             console.error(err);
             alert("Failed to delete account.");
         }
-    }
+    };
 
     return (
         <div className="form-wrapper m-auto">
             <form className="form-width" onSubmit={handleSubmit}>
                 <h3 className="mb-3 fw-heavy text-center">{ editMode ? <>Edit Profile</> : <>Your Profile</> }</h3>
+
+                <div className="img-thumbnail">
+                    <img
+                        src={user?.avatar || defaultAvatar}
+                        alt={"Profile picture"}
+                        className="avatar"
+                    />
+                </div>
 
                 <div className="form-floating mb-2">
                     <input type="text" name="first_name" className="form-control" value={formData.first_name} onChange={handleChange} disabled={!editMode}/>

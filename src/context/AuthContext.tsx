@@ -8,6 +8,7 @@ interface User {
     last_name: string;
     username: string;
     email: string;
+    avatar: string | null;
 }
 
 interface AuthContextType {
@@ -51,7 +52,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         try {
             const res = await api.get('/users/me');
             setUser(res.data);
-        } catch (error) {
+        } catch {
             logout();
         }
     };
