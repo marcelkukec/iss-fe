@@ -85,7 +85,7 @@ export default function User() {
             <form className="form-width" onSubmit={handleSubmit}>
                 <h3 className="mb-3 fw-heavy text-center">{ editMode ? <>Edit Profile</> : <>Your Profile</> }</h3>
 
-                <div className="img-thumbnail">
+                <div className="text-center mb-3">
                     <img
                         src={user?.avatar || defaultAvatar}
                         alt={"Profile picture"}
