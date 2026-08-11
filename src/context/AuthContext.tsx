@@ -15,8 +15,9 @@ interface AuthContextType {
     isLoggedIn: boolean;
     user: User | null;
     loading: boolean;
-    login: (token: string) => void;
+    login: (token: string) => Promise<void>;
     logout: () => void;
+    refreshUser: () => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | null>(null);
@@ -44,14 +45,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
     const login = async (token: string) => {
         localStorage.setItem("token", token);
-
         api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
 
-        setIsLoggedIn(true);
-
         try {
-            const res = await api.get('/users/me');
-            setUser(res.data);
+            await refreshUser();
+            setIsLoggedIn(true);
         } catch {
             logout();
         }
@@ -68,8 +66,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
         }, 0);
     };
 
+    const refreshUser = async () => {
+        const res = await api.get('users/me');
+        setUser(res.data);
+    }
+
     return (
-        <AuthContext.Provider value={{ isLoggedIn, user, loading, login, logout }}>
+        <AuthContext.Provider value={{ isLoggedIn, user, loading, login, logout, refreshUser }}>
             {children}
         </AuthContext.Provider>
     );

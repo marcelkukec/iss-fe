@@ -7,7 +7,7 @@ import * as React from "react";
 import defaultAvatar from '../assets/student.png';
 
 export default function User() {
-    const { user, logout } = useAuth();
+    const { user, logout, refreshUser } = useAuth();
     const [editMode, setEditMode] = useState(false);
     const [formData, setFormData] = useState({
         first_name: "",
@@ -17,7 +17,11 @@ export default function User() {
         password: "",
         currentPassword: "",
     });
+
     const [currentPassword, setCurrentPassword] = useState('');
+
+    const [avatarFile, setAvatarFile] = useState<File | null>(null);
+    const [uploadingAvatar, setUploadingAvatar] = useState(false);
 
     useEffect(() => {
         if (user) {
@@ -80,6 +84,61 @@ export default function User() {
         }
     };
 
+    const handleAvatarUpload = async () => {
+        if (!avatarFile || !currentPassword) {
+            alert("Choose an image and enter your current password.");
+            return;
+        }
+
+        try {
+            setUploadingAvatar(true);
+
+            const presignResponse = await api.post('/uploads/presign', {
+                filename: avatarFile.name,
+                contentType: avatarFile.type,
+            });
+
+            const {
+                uploadUrl,
+                publicUrl,
+            } = presignResponse.data;
+
+            const uploadResponse = await fetch(uploadUrl, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": avatarFile.type,
+                },
+                body: avatarFile,
+            });
+
+            if (!uploadResponse.ok) {
+                throw new Error("S3 upload failed");
+            }
+
+            await api.patch('/users/me/avatar', {
+                avatar: publicUrl,
+                current_password: currentPassword,
+            });
+
+            await refreshUser();
+
+            setAvatarFile(null);
+            setCurrentPassword("");
+
+            alert("Avatar updated successfully.");
+        } catch (err: any) {
+            console.error(err);
+
+            alert(
+                err.response?.data?.message || "Failed to update avatar."
+            );
+        } finally {
+            setUploadingAvatar(false);
+        }
+
+
+    };
+
     return (
         <div className="form-wrapper m-auto">
             <form className="form-width" onSubmit={handleSubmit}>
@@ -92,6 +151,56 @@ export default function User() {
                         className="avatar"
                     />
                 </div>
+
+                {editMode && (
+                    <div className="mb-3">
+                        <label className="form-label">
+                            Change profile picture
+                        </label>
+
+                        <input
+                            type="file"
+                            className="form-control mb-2"
+                            accept="image/jpeg,image/png,image/webp"
+                            onChange={(e) => {
+                                const file = e.target.files?.[0];
+
+                                if (file) {
+                                    setAvatarFile(file);
+                                }
+                            }}
+                        />
+
+                        <div className="form-floating mb-2">
+                            <input
+                                type="password"
+                                className="form-control"
+                                id="avatarPassword"
+                                value={currentPassword}
+                                onChange={(e) => setCurrentPassword(e.target.value)}
+                            />
+
+                            <label htmlFor="avatarPassword">
+                                Current Password
+                            </label>
+                        </div>
+
+                        <button
+                            type="button"
+                            className="btn btn-outline-primary w-100"
+                            onClick={handleAvatarUpload}
+                            disabled={
+                                !avatarFile ||
+                                !currentPassword ||
+                                uploadingAvatar
+                            }
+                        >
+                            {uploadingAvatar
+                                ? 'Uploading...'
+                                : 'Update Profile Picture'}
+                        </button>
+                    </div>
+                )}
 
                 <div className="form-floating mb-2">
                     <input type="text" name="first_name" className="form-control" value={formData.first_name} onChange={handleChange} disabled={!editMode}/>
