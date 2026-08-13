@@ -15,13 +15,12 @@ export default function User() {
         username: "",
         email: "",
         password: "",
-        currentPassword: "",
     });
 
     const [currentPassword, setCurrentPassword] = useState('');
 
     const [avatarFile, setAvatarFile] = useState<File | null>(null);
-    const [uploadingAvatar, setUploadingAvatar] = useState(false);
+    const [saving, setSaving] = useState(false);
 
     useEffect(() => {
         if (user) {
@@ -31,7 +30,6 @@ export default function User() {
                 username: user.username,
                 email: user.email,
                 password: "",
-                currentPassword: "",
             });
         }
 
@@ -59,13 +57,53 @@ export default function User() {
         }
 
         try {
-            await api.patch(`/users/me`, payload);
-            alert("User updated successfully.");
+            setSaving(true);
+
+            if (avatarFile) {
+                // Verify password + get upload permission
+                const { data } = await api.post('/uploads/presign', {
+                    filename: avatarFile.name,
+                    contentType: avatarFile.type,
+                    current_password: currentPassword,
+                });
+
+                // Upload to AWS
+                const uploadResponse = await fetch(data.uploadUrl, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': avatarFile.type,
+                    },
+                    body: avatarFile,
+                });
+
+                if (!uploadResponse.ok) {
+                    throw new Error('Avatar upload failed');
+                }
+
+                // Include successful upload in normal user update
+                payload.avatar = data.publicUrl;
+            }
+
+            // One DB update
+            await api.patch('/users/me', payload);
+
+            await refreshUser();
+
+            setAvatarFile(null);
+            setCurrentPassword('');
             setEditMode(false);
-            setFormData(prev => ({ ...prev, password: "" }));
+
+            alert('User updated successfully.');
         } catch (err: any) {
             console.error(err);
-            alert("Failed to update user.");
+
+            alert(
+                err.response?.data?.message ||
+                err.message ||
+                'Failed to update user.'
+            );
+        } finally {
+            setSaving(false);
         }
     };
 
@@ -81,60 +119,6 @@ export default function User() {
         } catch (err: any) {
             console.error(err);
             alert("Failed to delete account.");
-        }
-    };
-
-    const handleAvatarUpload = async () => {
-        if (!avatarFile || !currentPassword) {
-            alert("Please choose an image.");
-            return;
-        }
-
-        if (!currentPassword) {
-            alert("Please enter your current password");
-            return;
-        }
-
-        try {
-            setUploadingAvatar(true);
-
-            const presignResponse = await api.post('/uploads/presign', {
-                filename: avatarFile.name,
-                contentType: avatarFile.type,
-            });
-
-            const { uploadUrl, publicUrl } = presignResponse.data;
-
-            const uploadResponse = await fetch(uploadUrl, {
-                method: "PUT",
-                headers: { "Content-Type": avatarFile.type },
-                body: avatarFile,
-            });
-
-            if (!uploadResponse.ok) {
-                throw new Error("S3 upload failed");
-            }
-
-            await api.patch('/users/me/avatar', {
-                avatar: publicUrl,
-                current_password: currentPassword,
-            });
-
-            await refreshUser();
-
-            setAvatarFile(null);
-            setCurrentPassword("");
-
-            alert("Avatar updated successfully.");
-        } catch (err: any) {
-            console.error(err);
-
-            alert(
-                err.response?.data?.message || "Failed to update avatar."
-            );
-        } finally {
-            setUploadingAvatar(false);
-            setEditMode(false);
         }
     };
 
@@ -159,27 +143,13 @@ export default function User() {
 
                         <input
                             type="file"
-                            className="form-control mb-2"
+                            className="form-control"
                             accept="image/jpeg,image/png,image/webp"
                             onChange={(e) => {
                                 const file = e.target.files?.[0];
-
-                                if (file) {
-                                    setAvatarFile(file);
-                                }
+                                setAvatarFile(file || null);
                             }}
                         />
-
-                        <button
-                            type="button"
-                            className="btn btn-outline-primary w-100"
-                            onClick={handleAvatarUpload}
-                            disabled={!avatarFile || !currentPassword || uploadingAvatar}
-                        >
-                            {uploadingAvatar
-                                ? 'Uploading...'
-                                : 'Update Profile Picture'}
-                        </button>
                     </div>
                 )}
 
@@ -219,7 +189,7 @@ export default function User() {
 
                 {editMode ? (
                     <>
-                        <button type="submit" className="btn btn-primary w-100 py-2 mb-2">Save Changes</button>
+                        <button type="submit" className="btn btn-primary w-100 py-2 mb-2" disabled={saving}>Save Changes</button>
 
                         <button type="button" onClick={() => setEditMode(false) } className="btn btn-outline-primary w-100 py-2">Cancel</button>
                     </>
