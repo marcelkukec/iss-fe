@@ -86,7 +86,12 @@ export default function User() {
 
     const handleAvatarUpload = async () => {
         if (!avatarFile || !currentPassword) {
-            alert("Choose an image and enter your current password.");
+            alert("Please choose an image.");
+            return;
+        }
+
+        if (!currentPassword) {
+            alert("Please enter your current password");
             return;
         }
 
@@ -98,16 +103,11 @@ export default function User() {
                 contentType: avatarFile.type,
             });
 
-            const {
-                uploadUrl,
-                publicUrl,
-            } = presignResponse.data;
+            const { uploadUrl, publicUrl } = presignResponse.data;
 
             const uploadResponse = await fetch(uploadUrl, {
                 method: "PUT",
-                headers: {
-                    "Content-Type": avatarFile.type,
-                },
+                headers: { "Content-Type": avatarFile.type },
                 body: avatarFile,
             });
 
@@ -134,9 +134,8 @@ export default function User() {
             );
         } finally {
             setUploadingAvatar(false);
+            setEditMode(false);
         }
-
-
     };
 
     return (
@@ -171,29 +170,11 @@ export default function User() {
                             }}
                         />
 
-                        <div className="form-floating mb-2">
-                            <input
-                                type="password"
-                                className="form-control"
-                                id="avatarPassword"
-                                value={currentPassword}
-                                onChange={(e) => setCurrentPassword(e.target.value)}
-                            />
-
-                            <label htmlFor="avatarPassword">
-                                Current Password
-                            </label>
-                        </div>
-
                         <button
                             type="button"
                             className="btn btn-outline-primary w-100"
                             onClick={handleAvatarUpload}
-                            disabled={
-                                !avatarFile ||
-                                !currentPassword ||
-                                uploadingAvatar
-                            }
+                            disabled={!avatarFile || !currentPassword || uploadingAvatar}
                         >
                             {uploadingAvatar
                                 ? 'Uploading...'
