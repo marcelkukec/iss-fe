@@ -70,10 +70,10 @@ export default function CreatePost() {
             const payload = { title, body, group_id: Number(groupId), image: imageUrl, };
 
             if (post_id) {
-                await api.patch(`/posts/${post_id}`, { payload });
+                await api.patch(`/posts/${post_id}`, payload);
                 alert("Post updated!");
             } else {
-                await api.post("/posts", { payload });
+                await api.post("/posts", payload);
                 alert("Post created!");
             }
             navigate("/");
