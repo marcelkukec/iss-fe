@@ -94,6 +94,21 @@ export default function Post() {
 
                 <p>{post.body}</p>
 
+                {post.image && (
+                    <div className="my-3">
+                        <img
+                            src={post.image}
+                            alt={post.title}
+                            style={{
+                                width: '100%',
+                                maxHeight: '500px',
+                                objectFit: 'cover',
+                                borderRadius: '8px',
+                            }}
+                        />
+                    </div>
+                )}
+
                 <h4 className="mt-5">Comments</h4>
                 <div className="mb-4">
                     {!showCommentForm  ? (

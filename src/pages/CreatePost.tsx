@@ -13,6 +13,10 @@ export default function CreatePost() {
     const [groups, setGroups] = useState([]);
     const navigate = useNavigate();
 
+    const [imageFile, setImageFile] = useState<File | null>(null);
+    const [existingImage, setExistingImage] = useState<string | null>(null);
+    const [saving, setSaving] = useState(false);
+
     useEffect(() => {
         api.get("/groups/my-groups").then(res => {
             setGroups(res.data);
@@ -23,6 +27,7 @@ export default function CreatePost() {
                 setTitle(res.data.title);
                 setBody(res.data.body);
                 setGroupId(res.data.group.id.toString());
+                setExistingImage(res.data.image || null);
             });
         } else if (preselectedGroupId) {
             setGroupId(preselectedGroupId);
@@ -38,18 +43,45 @@ export default function CreatePost() {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
+            setSaving(true);
+
+            let imageUrl = existingImage;
+
+            if (imageFile) {
+                const { data } = await api.post('uploads/presign', {
+                    filename: imageFile.name,
+                    contentType: imageFile.type,
+                    uploadType: 'posts',
+                });
+
+                const uploadResponse = await fetch(data.uploadUrl, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': imageFile.type, },
+                    body: imageFile,
+                });
+
+                if (!uploadResponse.ok) {
+                    throw new Error('Image upload failed.');
+                }
+
+                imageUrl = data.publicUrl;
+            }
+
+            const payload = { title, body, group_id: Number(groupId), image: imageUrl, };
+
             if (post_id) {
-                await api.patch(`/posts/${post_id}`, { title, body, group_id: Number(groupId) });
+                await api.patch(`/posts/${post_id}`, { payload });
                 alert("Post updated!");
             } else {
-                await api.post("/posts", { title, body, group_id: groupId });
+                await api.post("/posts", { payload });
                 alert("Post created!");
             }
-            console.log("Submitting post:", { title, body, group_id: groupId, post_id });
             navigate("/");
         } catch (err) {
             console.error(err);
             alert("Failed to save post.");
+        } finally {
+            setSaving(false);
         }
     };
 
@@ -66,6 +98,34 @@ export default function CreatePost() {
                         <label className="form-label">Body</label>
                         <textarea className="form-control" value={body} onChange={e => setBody(e.target.value)} required />
                     </div>
+
+                    <div className="mb-3">
+                        <label className="form-label">Post image</label>
+
+                        {existingImage && !imageFile && (
+                            <div className="mb-2">
+                                <img
+                                    src={existingImage}
+                                    alt="Current post"
+                                    style={{
+                                        maxWidth: '300px',
+                                        maxHeight: '200px',
+                                        objectFit: 'cover',
+                                    }}
+                                />
+                            </div>
+                        )}
+
+                        <input
+                            type="file"
+                            className="form-control"
+                            accept="image/jpeg,image/png"
+                            onChange={(e) => {
+                                setImageFile(e.target.files?.[0] || null);
+                            }}
+                        />
+                    </div>
+
                     <div className="mb-3">
                         <label className="form-label">Select Group</label>
                         <select className="form-select" value={groupId} onChange={(e) => setGroupId(e.target.value)} required disabled={!!preselectedGroupId || !!post_id}>
@@ -75,7 +135,7 @@ export default function CreatePost() {
                             ))}
                         </select>
                     </div>
-                    <button type="submit" className="btn btn-primary">{post_id ? "Update" : "Post"}</button>
+                    <button type="submit" className="btn btn-primary" disabled={saving}>{post_id ? "Update" : "Post"}</button>
                 </form>
             </div>
         </div>
