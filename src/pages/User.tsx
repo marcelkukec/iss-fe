@@ -141,7 +141,7 @@ export default function User() {
                         <input
                             type="file"
                             className="form-control"
-                            accept="image/jpeg,image/png,image/webp"
+                            accept="image/jpeg,image/png"
                             onChange={(e) => {
                                 const file = e.target.files?.[0];
                                 setAvatarFile(file || null);
