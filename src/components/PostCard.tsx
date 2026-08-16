@@ -1,5 +1,6 @@
 import * as React from "react";
 import {Link} from "react-router-dom";
+import "../css/Post.css";
 
 interface PostCardProps {
     id: number;
@@ -23,7 +24,7 @@ const PostCard: React.FC<PostCardProps> = ({ id, title, body, user, group, image
                         <img
                             src={image}
                             alt={title}
-                            className="post-thumbnail float-end"
+                            className="post-thumbnail"
                         />
                     )}
                     <div className="d-flex">

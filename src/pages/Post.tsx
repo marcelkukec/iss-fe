@@ -2,6 +2,7 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import api from "../api/api.ts";
 import { useAuth } from "../context/AuthContext.tsx";
+import "../css/Post.css";
 
 export default function Post() {
     const { id } = useParams();
@@ -99,11 +100,7 @@ export default function Post() {
                         <img
                             src={post.image}
                             alt={post.title}
-                            style={{
-                                width: '100%',
-                                maxHeight: '600px',
-                                objectFit: 'contain',
-                            }}
+                            className="post-image"
                         />
                     </div>
                 )}
