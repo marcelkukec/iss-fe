@@ -11,6 +11,8 @@ import CreatePost from "./pages/CreatePost.tsx";
 import UserPosts from "./pages/UserPosts.tsx";
 import CreateGroup from "./pages/CreateGroup.tsx";
 import VerifyEmail from "./pages/VerifyEmail.tsx";
+import ForgotPassword from "./pages/ForgotPassword.tsx";
+import ResetPassword from "./pages/ResetPassword.tsx";
 
 function App() {
   return (
@@ -26,6 +28,8 @@ function App() {
         <Route path="/groups/create" element={<CreateGroup />} />
         <Route path="/groups/:id" element={<Group />} />
         <Route path="/verify-email" element={<VerifyEmail />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
     </Routes>
   )
 }

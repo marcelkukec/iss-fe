@@ -7,6 +7,8 @@ export default function VerifyEmail() {
     const [status, setStatus] = useState('Verifying email...');
 
     useEffect(() => {
+        document.title = "Verify email";
+
         const token = searchParams.get('token');
 
         if (!token) {

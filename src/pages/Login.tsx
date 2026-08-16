@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import { useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import '../css/Form.css';
 import api from "../api/api.ts";
 import { useAuth } from "../context/AuthContext.tsx";
@@ -51,6 +51,10 @@ export default function Login() {
                 </div>
                 <button className="btn btn-primary w-100 py-2" type="submit">Log in</button>
             </form>
+
+            <div className="text-end mb-3">
+                <Link to="/forgot-password">Forgot password?</Link>
+            </div>
         </main>
     );
 }
