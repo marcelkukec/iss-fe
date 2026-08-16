@@ -17,9 +17,6 @@ const PostCard: React.FC<PostCardProps> = ({ id, title, body, user, group, image
         <Link to={`/posts/${id}`} className="text-decoration-none text-reset">
             <div className="card mb-4 shadow-sm">
                 <div className="card-body">
-                    <small className="text-muted">{user || 'deleted_user'}/{group}</small>
-                    <h5 className="card-title mt-2">{title}</h5>
-                    <p className="card-text">{body}</p>
                     {image && (
                         <img
                             src={image}
@@ -27,6 +24,9 @@ const PostCard: React.FC<PostCardProps> = ({ id, title, body, user, group, image
                             className="post-thumbnail"
                         />
                     )}
+                    <small className="text-muted">{user || 'deleted_user'}/{group}</small>
+                    <h5 className="card-title mt-2">{title}</h5>
+                    <p className="card-text">{body}</p>
                     <div className="d-flex">
                     </div>
                 </div>
