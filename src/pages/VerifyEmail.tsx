@@ -10,12 +10,15 @@ export default function VerifyEmail() {
         const token = searchParams.get('token');
 
         if (!token) {
-            setStatus('Verification token is missing')
+            setStatus('Verification token is missing');
+            return;
         }
 
         const verify = async () => {
             try {
                 await api.post('auth/verify-email', { token });
+
+                setStatus('Email verified successfully.');
             } catch (err: any) {
                 console.error(err);
 
@@ -27,7 +30,7 @@ export default function VerifyEmail() {
     }, [searchParams]);
 
     return (
-        <div className="container mt-5 text-center">
+        <div className="mt-5 text-center">
             <h2>Email verification</h2>
 
             <p>{status}</p>
