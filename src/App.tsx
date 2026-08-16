@@ -10,6 +10,7 @@ import Explore from "./pages/Explore.tsx";
 import CreatePost from "./pages/CreatePost.tsx";
 import UserPosts from "./pages/UserPosts.tsx";
 import CreateGroup from "./pages/CreateGroup.tsx";
+import VerifyEmail from "./pages/VerifyEmail.tsx";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/user/:id/posts" element={<UserPosts />} />
         <Route path="/groups/create" element={<CreateGroup />} />
         <Route path="/groups/:id" element={<Group />} />
+        <Route path="/>verify-email" element={<VerifyEmail />} />
     </Routes>
   )
 }
