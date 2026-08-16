@@ -60,14 +60,13 @@ export default function User() {
             setSaving(true);
 
             if (avatarFile) {
-                // Verify password + get upload permission
                 const { data } = await api.post('/uploads/presign', {
                     filename: avatarFile.name,
                     contentType: avatarFile.type,
+                    uploadType: 'avatars',
                     current_password: currentPassword,
                 });
 
-                // Upload to AWS
                 const uploadResponse = await fetch(data.uploadUrl, {
                     method: 'PUT',
                     headers: {
@@ -80,11 +79,9 @@ export default function User() {
                     throw new Error('Avatar upload failed');
                 }
 
-                // Include successful upload in normal user update
                 payload.avatar = data.publicUrl;
             }
 
-            // One DB update
             await api.patch('/users/me', payload);
 
             await refreshUser();
