@@ -25,7 +25,7 @@ function App() {
         <Route path="/user/:id/posts" element={<UserPosts />} />
         <Route path="/groups/create" element={<CreateGroup />} />
         <Route path="/groups/:id" element={<Group />} />
-        <Route path="/>verify-email" element={<VerifyEmail />} />
+        <Route path="/verify-email" element={<VerifyEmail />} />
     </Routes>
   )
 }
