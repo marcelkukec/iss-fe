@@ -8,6 +8,7 @@ interface PostData {
     id: number;
     title: string;
     body: string;
+    image?: string | null;
     user: {
         username: string;
     };
@@ -42,7 +43,7 @@ export default function Explore() {
                 <div className="row">
                     <div className="col-md-8">
                         {posts.map((post) => (
-                            <PostCard key={post.id} id={post.id} title={post.title} body={post.body} user={post.user ? post.user.username : 'deleted_user'} group={post.group.name} created_at={post.created_at}/>
+                            <PostCard key={post.id} id={post.id} title={post.title} body={post.body} user={post.user ? post.user.username : 'deleted_user'} group={post.group.name} created_at={post.created_at} image={post.image} />
                         ))}
                     </div>
 

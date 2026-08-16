@@ -101,9 +101,8 @@ export default function Post() {
                             alt={post.title}
                             style={{
                                 width: '100%',
-                                maxHeight: '500px',
-                                objectFit: 'cover',
-                                borderRadius: '8px',
+                                maxHeight: '600px',
+                                objectFit: 'contain',
                             }}
                         />
                     </div>

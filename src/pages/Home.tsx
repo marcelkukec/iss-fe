@@ -8,6 +8,7 @@ interface PostData {
     id: number;
     title: string;
     body: string;
+    image?: string | null;
     user: {
         username: string;
     };
@@ -51,7 +52,7 @@ export default function Home() {
                     <div className="col-md-8">
                         <Link to="/create" className="btn btn-primary mb-4">Create Post</Link>
                         {posts.map(post => (
-                            <PostCard key={post.id} id={post.id} title={post.title} body={post.body} user={post.user?.username || 'deleted_user'} group={post.group.name} created_at={post.created_at}/>
+                            <PostCard key={post.id} id={post.id} title={post.title} body={post.body} user={post.user?.username || 'deleted_user'} group={post.group.name} created_at={post.created_at} image={post.image} />
                         ))}
                     </div>
 

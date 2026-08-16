@@ -52,7 +52,7 @@ export default function Login() {
                 <button className="btn btn-primary w-100 py-2" type="submit">Log in</button>
             </form>
 
-            <div className="text-end mb-3">
+            <div className="mb-3">
                 <Link to="/forgot-password">Forgot password?</Link>
             </div>
         </main>

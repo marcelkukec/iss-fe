@@ -8,6 +8,7 @@ interface PostData {
     id: number;
     title: string;
     body: string;
+    image?: string | null;
     created_at: string;
     user?: { username: string };
 }
@@ -72,7 +73,7 @@ export default function Group() {
                 <h6 className="mb-4 text-muted">{groupDesc}</h6>
                 {posts.length > 0 ? (
                     posts.map(post => (
-                        <PostCard id={post.id} key={post.id} title={post.title} body={post.body} created_at={post.created_at} user={post.user?.username || "deleted_user"} group={groupName} />
+                        <PostCard id={post.id} key={post.id} title={post.title} body={post.body} created_at={post.created_at} user={post.user?.username || "deleted_user"} group={groupName} image={post.image} />
                     ))
                 ) : (
                     <p className="text-muted">No posts in this group yet.</p>
