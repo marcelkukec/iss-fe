@@ -49,12 +49,11 @@ export default function Login() {
                     <input type="password" className="form-control mb-2" id="floatingPassword" value={password} onChange={(e) => setPassword(e.target.value)}/>
                     <label htmlFor="floatingPassword">Password</label>
                 </div>
+                <div className="mb-3">
+                    <Link to="/forgot-password">Forgot password?</Link>
+                </div>
                 <button className="btn btn-primary w-100 py-2" type="submit">Log in</button>
             </form>
-
-            <div className="mb-3">
-                <Link to="/forgot-password">Forgot password?</Link>
-            </div>
         </main>
     );
 }
