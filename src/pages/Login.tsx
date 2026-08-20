@@ -32,7 +32,37 @@ export default function Login() {
             navigate('/');
         }
         document.title = 'Log In';
-    }, [isLoggedIn, navigate])
+    }, [isLoggedIn, navigate]);
+
+    useEffect(() => {
+        if (!window.google) return;
+
+        window.google.accounts.id.initialize({
+            client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+            callback: async (response: any) => {
+                try {
+                    const res = await api.post('auth/google', {
+                        credential: response.credential,
+                    });
+
+                    await login(res.data.access_token);
+
+                    navigate('/');
+                } catch (err: any) {
+                    setError(err.response?.data?.message || 'Google login failed');
+                }
+            },
+        });
+
+        window.google.accounts.id.renderButton(
+            document.getElementById('googleLogin'),
+            {
+                theme: 'outline',
+                size: 'large',
+                width: '300px',
+            }
+        );
+    }, [login, navigate])
 
     return (
         <main className="form-wrapper m-auto">
@@ -53,6 +83,7 @@ export default function Login() {
                     <Link to="/forgot-password">Forgot password?</Link>
                 </div>
                 <button className="btn btn-primary w-100 py-2" type="submit">Log in</button>
+                <div id="googleLogin" className="d-flex justify-content-center mt-3" />
             </form>
         </main>
     );
