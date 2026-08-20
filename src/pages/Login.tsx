@@ -41,7 +41,7 @@ export default function Login() {
             client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
             callback: async (response: any) => {
                 try {
-                    const res = await api.post('auth/google', {
+                    const res = await api.post('/auth/google', {
                         credential: response.credential,
                     });
 
