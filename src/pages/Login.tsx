@@ -39,17 +39,31 @@ export default function Login() {
 
         window.google.accounts.id.initialize({
             client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+
             callback: async (response: any) => {
                 try {
                     const res = await api.post('/auth/google', {
                         credential: response.credential,
                     });
 
-                    await login(res.data.access_token);
+                    if (res.data.requires_registration) {
+                        navigate('/register', {
+                            state: {
+                                googleSignupToken: res.data.signup_token,
+                                googleUser: res.data.user,
+                            },
+                        });
 
+                        return;
+                    }
+
+                    await login(res.data.access_token);
                     navigate('/');
                 } catch (err: any) {
-                    setError(err.response?.data?.message || 'Google login failed');
+                    setError(
+                        err.response?.data?.message ||
+                        'Google login failed'
+                    );
                 }
             },
         });
@@ -59,10 +73,10 @@ export default function Login() {
             {
                 theme: 'outline',
                 size: 'large',
-                width: '300px',
+                width: 300,
             }
         );
-    }, [login, navigate])
+    }, [login, navigate]);
 
     return (
         <main className="form-wrapper m-auto">
