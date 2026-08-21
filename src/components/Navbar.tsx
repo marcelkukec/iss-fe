@@ -13,7 +13,7 @@ const Navbar = () => {
             <div className="container-fluid d-flex flex-wrap justify-content-between">
                 <ul className="nav me-auto">
                     <li className="nav-item">
-                        <NavLink to="/" className={getNavLinkClass}>Home</NavLink>
+                        <NavLink to="/" className="image"><img src="../../public/vsfera-logo-no-bg.png" /></NavLink>
                     </li>
                     <li className="nav-item">
                         <NavLink to="/explore" className={getNavLinkClass}>Explore</NavLink>
