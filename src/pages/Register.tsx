@@ -83,6 +83,67 @@ export default function Register() {
     };
 
     useEffect(() => {
+        if (isGoogleRegistration) return;
+        if (!window.google) return;
+
+        window.google.accounts.id.initialize({
+            client_id: import.meta.env.VITE_GOOGLE_CLIENT_ID,
+
+            callback: async (response: any) => {
+                try {
+                    setError('');
+
+                    const res = await api.post('/auth/google', {
+                        credential: response.credential,
+                    });
+
+                    // Brand-new Google user
+                    if (res.data.requires_registration) {
+                        navigate('/register', {
+                            state: {
+                                googleSignupToken: res.data.signup_token,
+                                googleUser: res.data.user,
+                            },
+                            replace: true,
+                        });
+
+                        return;
+                    }
+
+                    // Google account is already registered
+                    await login(res.data.access_token);
+                    navigate('/');
+                } catch (err: any) {
+                    setError(
+                        err.response?.data?.message ||
+                        'Google registration failed'
+                    );
+                }
+            },
+        });
+
+        window.google.accounts.id.renderButton(
+            document.getElementById('googleRegister'),
+            {
+                theme: 'outline',
+                size: 'large',
+                width: 300,
+            }
+        );
+    }, [isGoogleRegistration, login, navigate]);
+
+    useEffect(() => {
+        if (googleUser) {
+            setFormData(prev => ({
+                ...prev,
+                first_name: googleUser.first_name || '',
+                last_name: googleUser.last_name || '',
+                email: googleUser.email || '',
+            }));
+        }
+    }, [googleUser]);
+
+    useEffect(() => {
         document.title = isGoogleRegistration ? 'Complete registration' : 'Sign up';
     }, [isGoogleRegistration]);
 
@@ -129,6 +190,13 @@ export default function Register() {
                 </div>
 
                 <button className="btn btn-primary w-100 py-2" type="submit" disabled={submitting}>{isGoogleRegistration ? 'Complete registration' : 'Sign up'}</button>
+
+                {!isGoogleRegistration && (
+                    <>
+                        <div className="text-center text-muted my-3"> or </div>
+                        <div id="googleRegister" className="d-flex justify-content-center" />
+                    </>
+                )}
             </form>
         </main>
     )
