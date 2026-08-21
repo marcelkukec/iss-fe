@@ -15,7 +15,7 @@ const Navbar = () => {
                     <li className="nav-item">
                         <NavLink to="/"><img src="/vsfera-logo-no-bg.png" alt="VSfera" className="image" /></NavLink>
                     </li>
-                    <li className="nav-item mt-1 ms-3">
+                    <li className="nav-item mt-1 ms-2">
                         <NavLink to="/explore" className={getNavLinkClass}>Explore</NavLink>
                     </li>
                 </ul>
